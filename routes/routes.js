@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const controller = require('../controller/controller.js');
 
-router.get('/', (req, res) => {
-    //res.send('<h1>Hello World!!!</h1>');
-    res.render('index', {pageTitle: 'Home Page', name:''});
-});
 
-router.get('/admin', (req, res) => {
-    res.render('index', {pageTitle: 'Admin Page', name:'Admin'});
-});
+router.get('/', controller.getIndex);
+
+router.get('/addPage', controller.getAddPage);
+
+router.post('/addPage', controller.postAddPage);
+
 
 module.exports = router;
