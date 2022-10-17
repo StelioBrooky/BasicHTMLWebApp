@@ -1,7 +1,7 @@
-const product = require('../model/model');
+const reptile = require('../model/model');
 
 exports.getIndex = (req, res) => {
-    res.render('index', {pageTitle: 'Home Page', name:''});
+    res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
 }
 
 exports.getAddPage = (req, res) => {
@@ -10,8 +10,8 @@ exports.getAddPage = (req, res) => {
 
 exports.postAddPage = (req, res) => {
     console.log(req.body.name);
-    p = new product(req.body.id, req.body.name);
+    p = new reptile(req.body.id, req.body.name);
     p.save();
-    console.log(p);
-    res.render('index', {pageTitle: 'Home Page', name:''});
+    console.log(reptile.fetchAll());
+    res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
 }

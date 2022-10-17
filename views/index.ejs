@@ -78,6 +78,18 @@
 
                 <h4>Red Eared Slider</h4>
                 <p>Common pet turtle that is native to the United States.</p>
+                
+                <h1>Reptiles</h1>
+                <% if(reptiles.length == 0){ %>
+                    <p>There are no reptiles</p>
+                <% } else { %>
+                    <ul>
+                    <% reptiles.forEach( p => { %>
+                        <li><%= p.name %> <%= p.id %></li>
+                    <% }) %>
+                    </ul>
+                <% } %>
+
             </div>
         </div>
 

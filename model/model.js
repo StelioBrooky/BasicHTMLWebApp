@@ -1,6 +1,6 @@
 const reptiles = [];
 
-module.exports = class Product {
+module.exports = class Reptile {
     constructor(id, name) {
         this.id = id;
         this.name = name;
