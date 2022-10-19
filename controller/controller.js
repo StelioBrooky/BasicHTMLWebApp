@@ -1,7 +1,10 @@
-import StartFirebase from '../data/config';
+//import StartFirebase from '../data/config';
 
+const StartFirebase = require('../data/config');
 const reptile = require('../model/model');
 const db = StartFirebase();
+
+const {set, ref} = require("firebase/database");
 
 exports.getIndex = (req, res) => {
     res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
