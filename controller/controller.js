@@ -1,4 +1,10 @@
+//import StartFirebase from '../data/config';
+
+const StartFirebase = require('../data/config');
 const reptile = require('../model/model');
+const db = StartFirebase();
+
+const {set, ref} = require("firebase/database");
 
 exports.getIndex = (req, res) => {
     res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
@@ -9,6 +15,21 @@ exports.getAddPage = (req, res) => {
 };
 
 exports.postAddPage = (req, res) => {
+    var reptileName = req.body.name;
+    var reptileId = req.body.id;
+
+
+        set(ref(db, 'reptiles/' + reptileId), {
+          name: reptileName
+        })
+        .then(() => {
+            console.log('Data saved!');
+        })
+        .catch((error) => {
+            console.log('Data not saved: ' + error);
+        });
+      
+
     console.log(req.body.name);
     p = new reptile(req.body.id, req.body.name);
     p.save();
