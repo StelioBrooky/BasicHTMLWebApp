@@ -14,7 +14,7 @@ exports.getIndex = (req, res) => {
 }
 
 exports.getAddPage = (req, res) => {
-    res.render('addPage', {pageTitle: 'Admin Page', name:'Admin'});
+    res.render('addPage', {idInput: req.body.id, nameInput: '', dietInput: '', locationInput: '', lifeExpectancyInput: '', scientificNameInput: '', enclosureInput: '', descriptionInput: ''});
 };
 
 exports.postAddPage = (req, res) => {
@@ -79,6 +79,8 @@ exports.postAddPage = (req, res) => {
                 req.body.scientificName = snapshot.val().scientificName;
                 req.body.enclosure = snapshot.val().enclosure;
                 req.body.description = snapshot.val().description;
+
+                res.render('addPage', {idInput: req.body.id, nameInput: snapshot.val().name, dietInput: snapshot.val().diet, locationInput: snapshot.val().location, lifeExpectancyInput: snapshot.val().lifeExpectancy, scientificNameInput: snapshot.val().scientificName, enclosureInput: snapshot.val().enclosure, descriptionInput: snapshot.val().description});
 
             } else {
                 console.log("No data available");
