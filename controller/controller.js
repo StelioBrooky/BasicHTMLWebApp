@@ -18,9 +18,10 @@ exports.postAddPage = (req, res) => {
     var reptileName = req.body.name;
     var reptileId = req.body.id;
 
+    if(req.body.action == 'add'){
 
         set(ref(db, 'reptiles/' + reptileId), {
-          name: reptileName
+            name: reptileName
         })
         .then(() => {
             console.log('Data saved!');
@@ -28,11 +29,14 @@ exports.postAddPage = (req, res) => {
         .catch((error) => {
             console.log('Data not saved: ' + error);
         });
-      
-
-    console.log(req.body.name);
-    p = new reptile(req.body.id, req.body.name);
-    p.save();
-    console.log(reptile.fetchAll());
-    res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
+        
+        console.log(req.body.name);
+        p = new reptile(req.body.id, req.body.name);
+        p.save();
+        console.log(reptile.fetchAll());
+        res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
+    }
+    else if(req.body.action == 'delete'){
+        console.log('delete');
+    }
 }
