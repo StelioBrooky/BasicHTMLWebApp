@@ -7,6 +7,9 @@ const db = StartFirebase();
 const {set, ref} = require("firebase/database");
 
 exports.getIndex = (req, res) => {
+    var rootRef = ref(db, 'reptiles/1');
+    console.log(rootRef);
+
     res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
 }
 
