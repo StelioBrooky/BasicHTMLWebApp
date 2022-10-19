@@ -91,7 +91,10 @@
                 <% } else { %>
                     <ul>
                     <% reptiles.forEach( p => { %>
-                        <li><%= p.name %> <%= p.id %></li>
+                        <div>
+                            <h4>ID: <%= p.id %>  <%= p.name %></h4>
+                            <p><%= p.description %></p>
+                        </div>
                     <% }) %>
                     </ul>
                 <% } %>

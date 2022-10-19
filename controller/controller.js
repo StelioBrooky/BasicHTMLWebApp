@@ -26,7 +26,7 @@ exports.postAddPage = (req, res) => {
     var reptileScientificName = req.body.scientificName;
     var reptileEnclousure = req.body.enclosure;
     var reptileDescription = req.body.description;
-
+    console.log(reptileDescription);
     if(req.body.action == 'add'){
 
         set(ref(db, 'reptiles/' + reptileId), {
@@ -37,6 +37,7 @@ exports.postAddPage = (req, res) => {
             scientificName: reptileScientificName,
             enclosure: reptileEnclousure,
             description: reptileDescription
+            
         })
         .then(() => {
             console.log('Data saved!');
@@ -46,7 +47,7 @@ exports.postAddPage = (req, res) => {
         });
         
         console.log(req.body.name);
-        p = new reptile(req.body.id, req.body.name);
+        p = new reptile(reptileName, reptileId, reptileDiet, reptileLocation, reptileLifeExpectancy, reptileScientificName, reptileEnclousure, reptileDescription);
         p.save();
         console.log(reptile.fetchAll());
         res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
