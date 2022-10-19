@@ -35,11 +35,16 @@ app.get('/protected', isLoggedIn, (req, res) => {
     res.send(`Hello ${req.user.displayName}`);
 });  
 
-app.get('/logout', (req, res) => {
-    req.logout();
-    req.session.destroy();
-    res.send('Goodbye!');
-  });
+
+
+app.get('/logout', (req, res, next) => {
+      req.logout(function (err) {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/');
+      });
+    })
 
 app.use(express.urlencoded({extended: false}));
 app.set('view engine', 'ejs');
