@@ -11,6 +11,8 @@ const bcrypt = require('bcryptjs')
 const flash = require('express-flash')
 const methodOverride = require('method-override')
 
+const port = process.env.PORT || 3000;
+
 require('./auth');
 
 const initializePassport = require('./passport-config')
@@ -125,4 +127,5 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 
 const server = http.createServer(app);
 
-server.listen(3000,'localhost');
+//server.listen(port,'localhost');
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
