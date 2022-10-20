@@ -59,24 +59,20 @@
         </div>
 
         <div class="jumbotron">
-            <h1><%=pageTitle%></h1>
-            <p class="lead"></p>
-            <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p>
-        </div>
-
-        <div class="jumbotron">
-            <h1><%=pageTitle%></h1>
-            <p class="lead"></p>
-            <p><a class="btn btn-lg btn-success" href="/auth/google" role="button">Login with Google</a></p>
-        </div>
-
-        <div class="jumbotron">
-            <h1><%=pageTitle%></h1>
             <p class="lead"></p>
             <p><a class="btn btn-lg btn-success" href="/register" role="button">Sign up</a></p>
         </div>
 
-        <h1>Hi <%= name %></h1>
+        <div class="jumbotron">
+            <p class="lead"></p>
+            <p><a class="btn btn-lg btn-success" href="/login" role="button">Login</a></p>
+        </div>
+
+        <div class="jumbotron">
+            <p class="lead"></p>
+            <p><a class="btn btn-lg btn-success" href="/auth/google" role="button">Login with Google</a></p>
+        </div>
+
         <form action="/logout?_method=DELETE" method="POST">
             <button type="submit">Log Out</button>
         </form>

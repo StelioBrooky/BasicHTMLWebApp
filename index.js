@@ -7,7 +7,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const app = express()
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const flash = require('express-flash')
 const methodOverride = require('method-override')
 
