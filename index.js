@@ -127,4 +127,5 @@ app.get('/logout', (req, res, next) => {
 
 const server = http.createServer(app);
 
-server.listen(port,'localhost');
+//server.listen(port,'localhost');
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
