@@ -43,11 +43,11 @@ app.use('/', routes);
 
 app.get('/auth/google',
     passport.authenticate('google', { scope: ['email', 'profile']})
-);
+  );
 
 app.get('/google/callback',
     passport.authenticate('google', { successRedirect: '/protected', failureRedirect: '/auth/failure'})
-);
+  );
 
 app.get('/auth/google/failure', (req, res) => {
     res.send('Failed to authenticate..');
@@ -55,7 +55,7 @@ app.get('/auth/google/failure', (req, res) => {
 
 app.get('/protected', isLoggedIn, (req, res) => {
     res.send(`Hello ${req.user.displayName}`);
-});  
+   });  
 
 app.get('/logout', (req, res, next) => {
       req.logout(function (err) {
@@ -64,13 +64,13 @@ app.get('/logout', (req, res, next) => {
         }
         res.redirect('/');
       });
-    })
+})
 
-    app.get('/', checkAuthenticated, (req, res) => {
-      res.render('index.ejs', { name: req.user.name })
-    })
+app.get('/', checkAuthenticated, (req, res) => {
+    res.render('index.ejs', { name: req.user.name })
+  })
 
-    app.get('/login', checkNotAuthenticated, (req, res) => {
+app.get('/login', checkNotAuthenticated, (req, res) => {
       res.render('login.ejs')
     })
     
@@ -104,7 +104,7 @@ app.get('/logout', (req, res, next) => {
         if (err) {
           return next(err);
         }
-        res.redirect('/login');
+        res.redirect('/');
       });
     })
     

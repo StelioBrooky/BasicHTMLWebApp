@@ -58,20 +58,17 @@
             </h3>
         </div>
 
-        <div class="jumbotron">
-            <p class="lead"></p>
-            <p><a class="btn btn-lg btn-success" href="/register" role="button">Sign up</a></p>
-        </div>
+        <form action="/register">
+            <input type="submit" value="Sign Up" />
+        </form>
 
-        <div class="jumbotron">
-            <p class="lead"></p>
-            <p><a class="btn btn-lg btn-success" href="/login" role="button">Login</a></p>
-        </div>
+        <form action="/login">
+            <input type="submit" value="Login" />
+        </form>
 
-        <div class="jumbotron">
-            <p class="lead"></p>
-            <p><a class="btn btn-lg btn-success" href="/auth/google" role="button">Login with Google</a></p>
-        </div>
+        <form action="/auth/google">
+            <input type="submit" value="Login with Google" />
+        </form>
 
         <form action="/logout?_method=DELETE" method="POST">
             <button type="submit">Log Out</button>

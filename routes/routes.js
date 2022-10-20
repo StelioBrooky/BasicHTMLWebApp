@@ -9,5 +9,4 @@ router.get('/addPage', controller.getAddPage);
 
 router.post('/addPage', controller.postAddPage);
 
-
 module.exports = router;
