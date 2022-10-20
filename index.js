@@ -99,9 +99,13 @@ app.get('/logout', (req, res, next) => {
       }
     })
     
-    app.delete('/logout', (req, res) => {
-      req.logOut()
-      res.redirect('/login')
+    app.delete('/logout', (req, res, next) => {
+      req.logOut((err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/login');
+      });
     })
     
     function checkAuthenticated(req, res, next) {
