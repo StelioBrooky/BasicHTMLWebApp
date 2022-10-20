@@ -4,7 +4,7 @@ const StartFirebase = require('../data/config');
 const reptile = require('../model/model');
 const db = StartFirebase();
 
-const {set, ref, get, child, remove} = require("firebase/database");
+const {set, ref, get, child, remove, update} = require("firebase/database");
 
 exports.getIndex = (req, res) => {
     var rootRef = ref(db, 'reptiles/1');
@@ -27,8 +27,14 @@ exports.postAddPage = (req, res) => {
     var reptileEnclousure = req.body.enclosure;
     var reptileDescription = req.body.description;
     console.log(reptileDescription);
-    if(req.body.action == 'add'){
 
+    if(req.body.action == 'add'){
+        //if the id already exists in the database, then don't add it
+        const dbref = ref(db);
+        get(child(dbref, 'reptiles/' + reptileId)).then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log(snapshot.val());
+            } else {
         set(ref(db, 'reptiles/' + reptileId), {
             name: reptileName,
             diet: reptileDiet,
@@ -45,6 +51,7 @@ exports.postAddPage = (req, res) => {
         .catch((error) => {
             console.log('Data not saved: ' + error);
         });
+    
         
         console.log(req.body.name);
         p = new reptile(reptileName, reptileId, reptileDiet, reptileLocation, reptileLifeExpectancy, reptileScientificName, reptileEnclousure, reptileDescription);
@@ -52,6 +59,9 @@ exports.postAddPage = (req, res) => {
         console.log(reptile.fetchAll());
         res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
     }
+});
+    }
+    
 
     else if(req.body.action == 'delete'){
         remove(child(ref(db), 'reptiles/' + reptileId))
@@ -66,8 +76,26 @@ exports.postAddPage = (req, res) => {
     }
 
     else if(req.body.action == 'update'){
+        update(ref(db, 'reptiles/' + reptileId), {
+            name: reptileName,
+            diet: reptileDiet,
+            location: reptileLocation,
+            lifeExpectancy: reptileLifeExpectancy,
+            scientificName: reptileScientificName,
+            enclosure: reptileEnclousure,
+            description: reptileDescription
+        })
+        .then(() => {
+            console.log('Data updated!');
+            res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
+        })
+        .catch((error) => {
+            console.log('Data not updated: ' + error);
+        });
+
         console.log('update');
     }
+
     else if(req.body.action == 'select'){
         const dbref = ref(db);
         get(child(dbref, 'reptiles/' + reptileId)).then((snapshot) => {
