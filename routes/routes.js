@@ -28,6 +28,7 @@ const users = []
 
 function isLoggedIn(req, res, next) {
     req.user ? next() : res.sendStatus(401);
+    console.log("index log: "+req.user);
 }
 
 router.use(session({ secret: 'process.env.SESSION_SECRET', resave: false, saveUninitialized: false }));
@@ -64,10 +65,6 @@ router.get('/logout', (req, res, next) => {
     });
 })
 
-// router.get('/', checkAuthenticated, (req, res) => {
-//     res.render('index.ejs', { name: req.user.name })
-// })
-
 router.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
@@ -101,14 +98,6 @@ router.delete('/logout', (req, res, next) => {
     res.redirect('/');
     });
 })
-
-// function checkAuthenticated(req, res, next) {
-//     if (req.isAuthenticated()) {
-//     return next()
-//     }
-
-//     res.redirect('/login')
-// }
 
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {

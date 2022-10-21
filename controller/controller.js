@@ -7,13 +7,8 @@ let records = [];
 
 const {set, ref, get, child, remove, update, onValue} = require("firebase/database");
 
-exports.getLogin = (req, res) => {
-    res.render('login', {title: 'Login'});
-}
-
 exports.getIndex = (req, res) => {
-    var rootRef = ref(db, 'reptiles/1');
-    console.log(rootRef);
+    
     reptile.clear();
 
     //Getting the information from the database
@@ -29,12 +24,16 @@ exports.getIndex = (req, res) => {
             });
         });
 
-    res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
+    res.render('index', {pageTitle: 'Home Page', name:'', isLoggedIn: req.user, reptiles: reptile.fetchAll()});
 }
 
 exports.getAddPage = (req, res) => {
     res.render('addPage', {idInput: req.body.id, nameInput: '', dietInput: '', locationInput: '', lifeExpectancyInput: '', scientificNameInput: '', enclosureInput: '', descriptionInput: ''});
 };
+
+exports.getLogin = (req, res) => {
+    res.render('login', {title: 'Login'});
+}
 
 exports.postAddPage = (req, res) => {
     var reptileName = req.body.name;
@@ -154,7 +153,7 @@ exports.getAuthGoogleFailure = (req, res) => {
 }
 
 exports.getProtected = (req, res) => {
-    //console.log("index log: "+isLoggedIn);
+    
     res.send(`Hello ${req.user.displayName}`);
 }
 
