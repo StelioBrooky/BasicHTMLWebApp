@@ -44,7 +44,9 @@ router.use(methodOverride('_method'))
 
 router.get('/', controller.getIndex);
 
-router.get('/reptiles', controller.getReptiles);
+router.get('/reptiles/:repid', controller.getReptiles);
+
+router.get('/delete/:repid', controller.getDeleteReptiles);
 
 router.get('/addPage', controller.getAddPage);
 
