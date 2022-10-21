@@ -6,7 +6,7 @@ http = require('http');
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
-const app = express()
+
 const bcrypt = require('bcryptjs')
 const flash = require('express-flash')
 const methodOverride = require('method-override')
@@ -48,9 +48,9 @@ router.get('/addPage', controller.getAddPage);
 
 router.get('/login', checkNotAuthenticated, controller.getLogin);
 
-router.get('/auth/google', controller.getAuthGoogle);
+router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile']}));
 
-router.get('/google/callback', controller.getGoogleCallback);
+router.get('/google/callback', passport.authenticate('google', { successRedirect: '/protected', failureRedirect: '/auth/failure'}));
 
 router.get('/auth/google/failure', controller.getAuthGoogleFailure);
 
@@ -78,6 +78,13 @@ router.get('/register', checkNotAuthenticated, (req, res) => {
 router.post('/register', checkNotAuthenticated, async (req, res) => {
     try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const { password } = req.body
+    if (password.length < 6) {
+        return res.status(400).send('Password must be at least 6 characters')
+    }
+    if (password.length > 15) {
+        return res.status(400).send('Password must be not be greater than 15 characters')
+    }
     users.push({
         id: Date.now().toString(),
         name: req.body.name,

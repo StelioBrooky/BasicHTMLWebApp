@@ -1,14 +1,23 @@
-//import StartFirebase from '../data/config';
-
 const StartFirebase = require('../data/config');
+const passport = require('passport');
+const express = require('express');
 const reptile = require('../model/model');
 const db = StartFirebase();
-let records = [];
+
+
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// const initializePassport = require('../passport-config')
+// initializePassport(
+//   passport,
+//   email => users.find(user => user.email === email),
+//   id => users.find(user => user.id === id)
+// )
 
 const {set, ref, get, child, remove, update, onValue} = require("firebase/database");
 
 exports.getIndex = (req, res) => {
-    
     reptile.clear();
 
     //Getting the information from the database
@@ -164,5 +173,13 @@ exports.getLogout = (req, res, next) => {
         }
         res.redirect('/');
     });
+}
+
+exports.postLogin = (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
+    })
 }
 
