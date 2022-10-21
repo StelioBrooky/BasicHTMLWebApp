@@ -37,23 +37,32 @@
     <div class="container">
         <div class="header clearfix">
             <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Home</a></li>
-                    <li role="presentation"><a href="addPage">
-                        <% if (name) { %>
-                            Add
-                        <% } else { %>
-                            <!-- change this when implimenting login -->
-                            add
-                        <% } %>
-                    </a></li>
-                </ul>
+                
 
                 <% if(isLoggedIn){ %>
                     <h4><a href="addPage">Edit</a></h4>
-                <% } %>
 
-                
+                    <form action="/logout?_method=DELETE" method="POST">
+                        <button type="submit">Log Out</button>
+                    </form>
+
+                <% } else { %>
+
+                    <form action="/register">
+                        <input type="submit" value="Sign Up" />
+                    </form>
+            
+                    <form action="/login">
+                        <input type="submit" value="Login" />
+                    </form>
+            
+                    <form action="/auth/google">
+                        <input type="submit" value="Login with Google" />
+                    </form>
+
+                <% } %>
+        
+
             </nav>
             <h3 class="text-muted">
                 <% if(name){ %>
@@ -64,21 +73,7 @@
             </h3>
         </div>
 
-        <form action="/register">
-            <input type="submit" value="Sign Up" />
-        </form>
-
-        <form action="/login">
-            <input type="submit" value="Login" />
-        </form>
-
-        <form action="/auth/google">
-            <input type="submit" value="Login with Google" />
-        </form>
-
-        <form action="/logout?_method=DELETE" method="POST">
-            <button type="submit">Log Out</button>
-        </form>
+        
 
         <div class="row marketing">
             <div class="col-lg-6">
