@@ -65,10 +65,11 @@ router.get('/logout', (req, res, next) => {
     });
 })
 
-router.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
+router.post('/login', checkNotAuthenticated, 
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
 }))
 
 router.get('/register', checkNotAuthenticated, (req, res) => {
