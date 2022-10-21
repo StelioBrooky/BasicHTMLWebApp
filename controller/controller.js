@@ -175,11 +175,29 @@ exports.getLogout = (req, res, next) => {
     });
 }
 
-// exports.postLogin = (req, res, next) => {
-//     passport.authenticate('local', {
-//         successRedirect: '/',
-//         failureRedirect: '/login',
-//         failureFlash: true
-//     })
-// }
+exports.getReptiles = (req, res) => {
+    //console.log(req);
 
+    
+
+    const dbref = ref(db);
+        get(child(dbref, 'reptiles/' + 1)).then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log(snapshot.val());
+                // req.body.name = snapshot.val().name;
+                // req.body.diet = snapshot.val().diet;
+                // req.body.location = snapshot.val().location;
+                // req.body.lifeExpectancy = snapshot.val().lifeExpectancy;
+                // req.body.scientificName = snapshot.val().scientificName;
+                // req.body.enclosure = snapshot.val().enclosure;
+                // req.body.description = snapshot.val().description;
+                res.json(snapshot.val());
+                // res.render('addPage', {idInput: req.body.id, nameInput: snapshot.val().name, dietInput: snapshot.val().diet, locationInput: snapshot.val().location, lifeExpectancyInput: snapshot.val().lifeExpectancy, scientificNameInput: snapshot.val().scientificName, enclosureInput: snapshot.val().enclosure, descriptionInput: snapshot.val().description});
+
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+}

@@ -44,6 +44,8 @@ router.use(methodOverride('_method'))
 
 router.get('/', controller.getIndex);
 
+router.get('/reptiles', controller.getReptiles);
+
 router.get('/addPage', controller.getAddPage);
 
 router.get('/login', checkNotAuthenticated, controller.getLogin);
