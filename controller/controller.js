@@ -6,14 +6,6 @@ const db = StartFirebase();
 let records = [];
 
 const {set, ref, get, child, remove, update, onValue} = require("firebase/database");
-const { application } = require('express');
-
-
-exports.getLogin = (req, res) => {
-    res.render('login', {title: 'Login'});
-}
-
-var logggggggedIn = require('../index');
 
 exports.getLogin = (req, res) => {
     res.render('login', {title: 'Login'});
