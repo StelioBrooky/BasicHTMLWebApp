@@ -16,6 +16,10 @@ module.exports = class Reptile {
         reptiles.push(this);
     }
 
+    static clear(){
+        reptiles.length = 0;
+    }
+
     static fetchAll() {
         return reptiles;
     }

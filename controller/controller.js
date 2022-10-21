@@ -3,12 +3,28 @@
 const StartFirebase = require('../data/config');
 const reptile = require('../model/model');
 const db = StartFirebase();
+let records = [];
 
-const {set, ref, get, child, remove, update} = require("firebase/database");
+const {set, ref, get, child, remove, update, onValue} = require("firebase/database");
+const { application } = require('express');
 
 exports.getIndex = (req, res) => {
     var rootRef = ref(db, 'reptiles/1');
     console.log(rootRef);
+    reptile.clear();
+
+    //Getting the information from the database
+    var dbref = ref(db, 'reptiles');
+
+    onValue(dbref, (snapshot) => {
+            
+            snapshot.forEach(childSnapshot=>{
+                let keyName = childSnapshot.key;
+                let data = childSnapshot.val();
+                var item = new reptile(keyName, data.name, data.diet, data.location, data.lifeExpectancy, data.scientificName, data.enclosure, data.description);
+                item.save();
+            });
+        });
 
     res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
 }
@@ -29,10 +45,13 @@ exports.postAddPage = (req, res) => {
     console.log(reptileDescription);
 
     if(req.body.action == 'add'){
+        reptile.clear();
         //if the id already exists in the database, then don't add it
         const dbref = ref(db);
         get(child(dbref, 'reptiles/' + reptileId)).then((snapshot) => {
             if (snapshot.exists()) {
+                //alert the user that the reptile exists in the database already
+                console.log('reptile already exists');
                 console.log(snapshot.val());
             } else {
         set(ref(db, 'reptiles/' + reptileId), {
@@ -52,22 +71,19 @@ exports.postAddPage = (req, res) => {
             console.log('Data not saved: ' + error);
         });
     
-        
-        console.log(req.body.name);
-        p = new reptile(reptileName, reptileId, reptileDiet, reptileLocation, reptileLifeExpectancy, reptileScientificName, reptileEnclousure, reptileDescription);
-        p.save();
-        console.log(reptile.fetchAll());
-        res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
+        res.redirect('/');
+        //res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
     }
 });
     }
     
 
     else if(req.body.action == 'delete'){
+        reptile.clear();
         remove(child(ref(db), 'reptiles/' + reptileId))
         .then(() => {
             console.log('Data removed!');
-            res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
+            res.redirect('/');
         })
         .catch((error) => {
             console.log('Data not removed: ' + error);
@@ -76,6 +92,7 @@ exports.postAddPage = (req, res) => {
     }
 
     else if(req.body.action == 'update'){
+        reptile.clear();
         update(ref(db, 'reptiles/' + reptileId), {
             name: reptileName,
             diet: reptileDiet,
@@ -87,7 +104,7 @@ exports.postAddPage = (req, res) => {
         })
         .then(() => {
             console.log('Data updated!');
-            res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
+            res.redirect('/');
         })
         .catch((error) => {
             console.log('Data not updated: ' + error);
