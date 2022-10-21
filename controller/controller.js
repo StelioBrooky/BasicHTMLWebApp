@@ -6,11 +6,48 @@ const db = StartFirebase();
 
 const {set, ref, get, child, remove, update} = require("firebase/database");
 
-exports.getIndex = (req, res) => {
-    var rootRef = ref(db, 'reptiles/1');
-    console.log(rootRef);
+var logggggggedIn = require('../index');
 
-    res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
+exports.getLogin = (req, res) => {
+    res.render('login', {title: 'Login'});
+}
+
+exports.getIndex = (req, res) => {
+    const rootRef = ref(db, 'reptiles/1');
+
+    var reptileName = req.body.name;
+    var reptileId = req.body.id;
+    var reptileDiet = req.body.diet;
+    var reptileLocation = req.body.location;
+    var reptileLifeExpectancy = req.body.lifeExpectancy;
+    var reptileScientificName = req.body.scientificName;
+    var reptileEnclousure = req.body.enclosure;
+    var reptileDescription = req.body.description;
+
+    const dbref = ref(db);
+    get(child(dbref, 'reptiles/' + reptileId)).then((snapshot) => {
+        if (snapshot.exists()) {
+            console.log(snapshot.val());
+            // req.body.name = snapshot.val().name;
+            // req.body.diet = snapshot.val().diet;
+            // req.body.location = snapshot.val().location;
+            // req.body.lifeExpectancy = snapshot.val().lifeExpectancy;
+            // req.body.scientificName = snapshot.val().scientificName;
+            // req.body.enclosure = snapshot.val().enclosure;
+            // req.body.description = snapshot.val().description;
+
+            //res.render('addPage', {idInput: req.body.id, nameInput: snapshot.val().name, dietInput: snapshot.val().diet, locationInput: snapshot.val().location, lifeExpectancyInput: snapshot.val().lifeExpectancy, scientificNameInput: snapshot.val().scientificName, enclosureInput: snapshot.val().enclosure, descriptionInput: snapshot.val().description});
+
+        } else {
+            console.log("No data available");
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+
+    console.log("logged in: "+logggggggedIn.isLoggedIn);
+    
+    res.render('index', {pageTitle: 'Home Page', name:logggggggedIn.isLoggedIn, reptiles: reptile.fetchAll()});
 }
 
 exports.getAddPage = (req, res) => {
@@ -120,3 +157,30 @@ exports.postAddPage = (req, res) => {
         console.log('select');
     }
 }
+
+exports.getAuthGoogle = () => {
+    passport.authenticate('google', { scope: ['email', 'profile']});
+}
+
+exports.getGoogleCallback = () => {
+    passport.authenticate('google', { successRedirect: '/protected', failureRedirect: '/auth/failure'});
+}
+
+exports.getAuthGoogleFailure = (req, res) => {
+    res.send('Failed to authenticate');
+}
+
+exports.getProtected = (req, res) => {
+    //console.log("index log: "+isLoggedIn);
+    res.send(`Hello ${req.user.displayName}`);
+}
+
+exports.getLogout = (req, res, next) => {
+    req.logout(function (err) {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/');
+    });
+}
+
