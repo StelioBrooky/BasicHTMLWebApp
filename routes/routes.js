@@ -45,7 +45,7 @@ router.get('/', controller.getIndex);
 
 router.get('/addPage', controller.getAddPage);
 
-router.get('/login', controller.getLogin);
+router.get('/login', checkNotAuthenticated, controller.getLogin);
 
 router.get('/auth/google', controller.getAuthGoogle);
 
@@ -64,13 +64,9 @@ router.get('/logout', (req, res, next) => {
     });
 })
 
-router.get('/', checkAuthenticated, (req, res) => {
-    res.render('index.ejs', { name: req.user.name })
-})
-
-app.get('/login', checkNotAuthenticated, (req, res) => {
-      res.render('login.ejs')
-})
+// router.get('/', checkAuthenticated, (req, res) => {
+//     res.render('index.ejs', { name: req.user.name })
+// })
 
 router.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/',
@@ -106,13 +102,13 @@ router.delete('/logout', (req, res, next) => {
     });
 })
 
-function checkAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-    return next()
-    }
+// function checkAuthenticated(req, res, next) {
+//     if (req.isAuthenticated()) {
+//     return next()
+//     }
 
-    res.redirect('/login')
-}
+//     res.redirect('/login')
+// }
 
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
