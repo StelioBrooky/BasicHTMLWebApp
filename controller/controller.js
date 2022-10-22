@@ -3,18 +3,6 @@ const passport = require('passport');
 const express = require('express');
 const reptile = require('../model/model');
 const db = StartFirebase();
-
-
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// const initializePassport = require('../passport-config')
-// initializePassport(
-//   passport,
-//   email => users.find(user => user.email === email),
-//   id => users.find(user => user.id === id)
-// )
-
 const {set, ref, get, child, remove, update, onValue} = require("firebase/database");
 
 exports.getIndex = (req, res) => {
@@ -32,6 +20,7 @@ exports.getIndex = (req, res) => {
                 item.save();
             });
         });
+
 
     res.render('index', {pageTitle: 'Home Page', name:'', isLoggedIn: req.user, reptiles: reptile.fetchAll()});
 }
@@ -154,7 +143,7 @@ exports.getAuthGoogle = () => {
 }
 
 exports.getGoogleCallback = () => {
-    passport.authenticate('google', { successRedirect: '/protected', failureRedirect: '/auth/failure'});
+    passport.authenticate('google', { successRedirect: '/protecte', failureRedirect: '/auth/failure'});
 }
 
 exports.getAuthGoogleFailure = (req, res) => {
@@ -162,8 +151,8 @@ exports.getAuthGoogleFailure = (req, res) => {
 }
 
 exports.getProtected = (req, res) => {
-    
-    res.send(`Hello ${req.user.displayName}`);
+    res.render('protected', {name: req.user.displayName});
+    //res.send(`Hello ${req.user.displayName}`);
 }
 
 exports.getLogout = (req, res, next) => {
@@ -175,28 +164,33 @@ exports.getLogout = (req, res, next) => {
     });
 }
 
-exports.getReptiles = (req, res) => {
-    //console.log(req);
+//--------------------Web Service--------------------
 
-    
+exports.getReptiles = (req, res) => {
+
+    var url =req.params.repid;
 
     const dbref = ref(db);
-        get(child(dbref, 'reptiles/' + 1)).then((snapshot) => {
+        get(child(dbref, 'reptiles/' + url)).then((snapshot) => {
             if (snapshot.exists()) {
                 console.log(snapshot.val());
-                // req.body.name = snapshot.val().name;
-                // req.body.diet = snapshot.val().diet;
-                // req.body.location = snapshot.val().location;
-                // req.body.lifeExpectancy = snapshot.val().lifeExpectancy;
-                // req.body.scientificName = snapshot.val().scientificName;
-                // req.body.enclosure = snapshot.val().enclosure;
-                // req.body.description = snapshot.val().description;
                 res.json(snapshot.val());
-                // res.render('addPage', {idInput: req.body.id, nameInput: snapshot.val().name, dietInput: snapshot.val().diet, locationInput: snapshot.val().location, lifeExpectancyInput: snapshot.val().lifeExpectancy, scientificNameInput: snapshot.val().scientificName, enclosureInput: snapshot.val().enclosure, descriptionInput: snapshot.val().description});
-
             } else {
+                res.send("No data available");
                 console.log("No data available");
             }
+        }).catch((error) => {
+            console.error(error);
+        });
+}
+
+exports.getDeleteReptiles = (req, res) => {
+
+    var url =req.params.repid;
+
+    const dbref = ref(db);
+        remove(child(dbref, 'reptiles/' + url)).then(() => {
+            res.send("Data removed");
         }).catch((error) => {
             console.error(error);
         });
