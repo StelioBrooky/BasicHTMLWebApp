@@ -143,7 +143,7 @@ exports.getAuthGoogle = () => {
 }
 
 exports.getGoogleCallback = () => {
-    passport.authenticate('google', { successRedirect: '/protected', failureRedirect: '/auth/failure'});
+    passport.authenticate('google', { successRedirect: '/protecte', failureRedirect: '/auth/failure'});
 }
 
 exports.getAuthGoogleFailure = (req, res) => {
@@ -151,7 +151,8 @@ exports.getAuthGoogleFailure = (req, res) => {
 }
 
 exports.getProtected = (req, res) => {
-    res.send(`Hello ${req.user.displayName}`);
+    res.render('protected', {name: req.user.displayName});
+    //res.send(`Hello ${req.user.displayName}`);
 }
 
 exports.getLogout = (req, res, next) => {
