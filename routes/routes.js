@@ -12,12 +12,12 @@ const flash = require('express-flash')
 const methodOverride = require('method-override')
 
 //const port = process.env.PORT || 3000;
-require('../auth');
+require('../auth/auth');
 
 const router = express.Router();
 const controller = require('../controller/controller.js');
 
-const initializePassport = require('../passport-config')
+const initializePassport = require('../auth/passport-config')
 initializePassport(
   passport,
   email => users.find(user => user.email === email),
