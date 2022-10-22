@@ -46,7 +46,7 @@ router.get('/', controller.getIndex);
 
 router.get('/reptiles/:repid', controller.getReptiles);
 
-router.get('/delete/:repid', controller.getDeleteReptiles);
+router.delete('/reptiles/:repid', controller.getDeleteReptiles);
 
 router.get('/addPage', controller.getAddPage);
 
