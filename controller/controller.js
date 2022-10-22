@@ -3,18 +3,6 @@ const passport = require('passport');
 const express = require('express');
 const reptile = require('../model/model');
 const db = StartFirebase();
-
-
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// const initializePassport = require('../passport-config')
-// initializePassport(
-//   passport,
-//   email => users.find(user => user.email === email),
-//   id => users.find(user => user.id === id)
-// )
-
 const {set, ref, get, child, remove, update, onValue} = require("firebase/database");
 
 exports.getIndex = (req, res) => {
@@ -32,6 +20,7 @@ exports.getIndex = (req, res) => {
                 item.save();
             });
         });
+
 
     res.render('index', {pageTitle: 'Home Page', name:'', isLoggedIn: req.user, reptiles: reptile.fetchAll()});
 }
@@ -162,7 +151,6 @@ exports.getAuthGoogleFailure = (req, res) => {
 }
 
 exports.getProtected = (req, res) => {
-    
     res.send(`Hello ${req.user.displayName}`);
 }
 
