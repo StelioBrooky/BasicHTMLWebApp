@@ -7,13 +7,13 @@ const GOOGLE_CLIENT_SECRET = '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';
 CB1 = "http://localhost:3000/auth/google/callback";
 CB2 = 'https://reptile-resource.herokuapp.com/google/callback';
 
-const port = process.env.PORT || 3000;
+const port = require('./index.js')
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: CB2,
-    if (port = 3000){
+    if (port = 3000) {
         callbackURL = CB1;
     },
     passReqToCallback: true

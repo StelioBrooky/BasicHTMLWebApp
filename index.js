@@ -128,5 +128,9 @@ app.use('/', routes);
 
 //const server = http.createServer(app);
 
+module.export =  port;
+
+module.exports = app;
+
 //server.listen(port,'localhost');
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
