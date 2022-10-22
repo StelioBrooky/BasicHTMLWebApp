@@ -53,6 +53,7 @@ exports.postAddPage = (req, res) => {
                 //alert the user that the reptile exists in the database already
                 console.log('reptile already exists');
                 console.log(snapshot.val());
+                res.status(409).send("Reptile Already Exists");
             } else {
         set(ref(db, 'reptiles/' + reptileId), {
             name: reptileName,
@@ -69,10 +70,10 @@ exports.postAddPage = (req, res) => {
         })
         .catch((error) => {
             console.log('Data not saved: ' + error);
+            res.status(500).send("Data Not Saved");
         });
     
         res.redirect('/');
-        //res.render('index', {pageTitle: 'Home Page', name:'', reptiles: reptile.fetchAll()});
     }
 });
     }
@@ -87,6 +88,7 @@ exports.postAddPage = (req, res) => {
         })
         .catch((error) => {
             console.log('Data not removed: ' + error);
+            res.status(400).send("Invalid reptile ID");
         });
         console.log('delete');
     }
@@ -108,6 +110,7 @@ exports.postAddPage = (req, res) => {
         })
         .catch((error) => {
             console.log('Data not updated: ' + error);
+            res.status(500).send("Data Not Updated");
         });
 
         console.log('update');
@@ -133,18 +136,12 @@ exports.postAddPage = (req, res) => {
             }
         }).catch((error) => {
             console.error(error);
+            res.status(400).send("Invalid reptile ID");
         });
         console.log('select');
     }
 }
 
-// exports.getAuthGoogle = () => {
-//     passport.authenticate('google', { scope: ['email', 'profile']});
-// }
-
-// exports.getGoogleCallback = () => {
-//     passport.authenticate('google', { successRedirect: '/protected', failureRedirect: '/auth/failure'});
-// }
 
 exports.getAuthGoogleFailure = (req, res) => {
     res.send('Failed to authenticate');
@@ -152,7 +149,6 @@ exports.getAuthGoogleFailure = (req, res) => {
 
 exports.getProtected = (req, res) => {
     res.render('protected', {name: req.user.displayName});
-    //res.send(`Hello ${req.user.displayName}`);
 }
 
 exports.getLogout = (req, res, next) => {
@@ -176,8 +172,7 @@ exports.getReptiles = (req, res) => {
                 console.log(snapshot.val());
                 res.json(snapshot.val());
             } else {
-                res.send("No data available");
-                console.log("No data available");
+                res.status(400).send("Invalid reptile ID");
             }
         }).catch((error) => {
             console.error(error);
@@ -190,8 +185,9 @@ exports.getDeleteReptiles = (req, res) => {
 
     const dbref = ref(db);
         remove(child(dbref, 'reptiles/' + url)).then(() => {
-            res.send("Data removed");
+            res.status(200).send("Data removed");
         }).catch((error) => {
             console.error(error);
+            res.status(400).send("Invalid reptile ID");
         });
 }
