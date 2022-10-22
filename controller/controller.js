@@ -138,13 +138,13 @@ exports.postAddPage = (req, res) => {
     }
 }
 
-exports.getAuthGoogle = () => {
-    passport.authenticate('google', { scope: ['email', 'profile']});
-}
+// exports.getAuthGoogle = () => {
+//     passport.authenticate('google', { scope: ['email', 'profile']});
+// }
 
-exports.getGoogleCallback = () => {
-    passport.authenticate('google', { successRedirect: '/protecte', failureRedirect: '/auth/failure'});
-}
+// exports.getGoogleCallback = () => {
+//     passport.authenticate('google', { successRedirect: '/protected', failureRedirect: '/auth/failure'});
+// }
 
 exports.getAuthGoogleFailure = (req, res) => {
     res.send('Failed to authenticate');
